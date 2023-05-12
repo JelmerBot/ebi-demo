@@ -1,3 +1,12 @@
-// since there's no dynamic data here, we can prerender
-// it so that it gets served as a static asset in production
-export const prerender = true;
+export const load = ({ fetch }) => {
+    const fetchFlowers = async () => {
+      const res = await fetch('https://raw.githubusercontent.com/domoritz/maps/master/data/iris.json')
+      const data = await res.json()
+      data.forEach((d,i) => { d.id = i, d.species = "Iris " + d.species })
+      return data
+    }
+
+    return {
+      flowers: fetchFlowers()
+    }
+  }
